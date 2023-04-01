@@ -13,6 +13,12 @@ app.use(
     },
     onProxyRes(proxyRes) {
       proxyRes.headers["X-Frame-Options"] = "ALLOWALL";
+
+      // Check if the request URL contains 'challenge-platform'
+      if (proxyRes.req.path.includes("challenge-platform")) {
+        // Set the 'Content-Type' header to 'application/javascript'
+        proxyRes.headers["Content-Type"] = "application/javascript";
+      }
     },
   })
 );
