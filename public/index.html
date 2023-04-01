@@ -1,60 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#ffffff" />
-    <link rel="manifest" href="/manifest.json">
+    <link rel="manifest" href="/manifest.json" />
     <title>ChatGPT PWA</title>
     <script>
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', function() {
-            navigator.serviceWorker.register('sw.js').then(
-                function(registration) {
-                    console.log('Service Worker registration successful with scope: ', registration.scope);
-                },
-                function(err) {
-                    console.log('Service Worker registration failed: ', err);
-                }
-            );
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", function () {
+          navigator.serviceWorker.register("sw.js").then(
+            function (registration) {
+              console.log(
+                "Service Worker registration successful with scope: ",
+                registration.scope
+              );
+            },
+            function (err) {
+              console.log("Service Worker registration failed: ", err);
+            }
+          );
         });
-    }
+      }
     </script>
-    <style>
-    body,
-    html {
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        height: 100%;
-    }
+  </head>
 
-    .container {
-        position: relative;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-    }
-
-    #openai-chat {
-        position: absolute;
-        top: -50px;
-        /* Adjust this value to raise or lower the chat bar */
-        left: 0;
-        width: 100%;
-        height: calc(100% + 50px);
-        /* Adjust this value accordingly */
-        border: none;
-    }
-    </style>
-
-</head>
-
-<body>
-    <div class="container">
-        <iframe id="openai-chat" src="https://chat.openai.com" frameborder="0" scrolling="no"></iframe>
-    </div>
-</body>
-
+  <body>
+    <script>
+      window.location.replace("https://chat.openai.com");
+    </script>
+  </body>
 </html>
