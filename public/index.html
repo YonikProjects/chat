@@ -5,8 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#ffffff" />
     <link rel="manifest" href="/manifest.json" />
-    <title>ChatGPT PWA</title>
+    <title>OpenAI Chat PWA</title>
+    <style>
+      #install-button {
+        display: none;
+        background-color: #4caf50;
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <button id="install-button">Install App</button>
+
     <script>
+      // Service worker registration
       if ("serviceWorker" in navigator) {
         window.addEventListener("load", function () {
           navigator.serviceWorker.register("sw.js").then(
@@ -22,12 +42,39 @@
           );
         });
       }
-    </script>
-  </head>
 
-  <body>
-    <script>
-      window.location.replace("https://chat.openai.com");
+      let deferredPrompt;
+      const installButton = document.getElementById("install-button");
+
+      // Capture the beforeinstallprompt event
+      window.addEventListener("beforeinstallprompt", (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        installButton.style.display = "block";
+
+        installButton.addEventListener("click", (e) => {
+          installButton.style.display = "none";
+          deferredPrompt.prompt();
+          deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === "accepted") {
+              console.log("User accepted the install prompt");
+            } else {
+              console.log("User dismissed the install prompt");
+            }
+            deferredPrompt = null;
+          });
+        });
+      });
+
+      // Listen for appinstalled event
+      window.addEventListener("appinstalled", (evt) => {
+        console.log("App installed successfully");
+        redirectToOpenAIChat();
+      });
+
+      function redirectToOpenAIChat() {
+        window.location.replace("https://chat.openai.com");
+      }
     </script>
   </body>
 </html>
