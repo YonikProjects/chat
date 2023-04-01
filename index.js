@@ -22,6 +22,22 @@ app.use(
     },
   })
 );
+app.use(
+  "/proxy/js",
+  createProxyMiddleware({
+    target: "https://chat.openai.com",
+    changeOrigin: true,
+    headers: {
+      "X-Frame-Options": "ALLOWALL",
+    },
+    onProxyRes(proxyRes) {
+      proxyRes.headers["X-Frame-Options"] = "ALLOWALL";
+
+      // Set the 'Content-Type' header to 'application/javascript'
+      proxyRes.headers["Content-Type"] = "application/javascript";
+    },
+  })
+);
 
 app.use(express.static("public"));
 
